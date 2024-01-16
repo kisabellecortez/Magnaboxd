@@ -14,7 +14,7 @@ const SignIn =()=>{
  
     try{
         await signIn(email, password)
-        navigate('/home')
+        navigate('/explore')
     }
     catch(userCredential){
         console.log("Invalid email or password.")
@@ -27,34 +27,39 @@ const SignIn =()=>{
   }
 
     return(
-        <div className="user-auth">
-            <div className="user-auth-form">
-                <div className="input">
-                    <label for="name">EMAIL: </label>
-                    <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    placeholder="johndoe@google.ca"
-                    value={email}
-                    onChange={(e)=>setEmail(e.target.value)}
-                    required></input>
-                </div>
+        <div className="user-auth">    
+            <div className="title">       
+                <h1>WELCOME BACK TO MAGNABOXD</h1>
+             
+                <div className="user-auth-form">
+                    <h1>SIGN IN</h1>
+                    <div className="input">
+                        <label for="name">EMAIL: </label>
+                        <input 
+                        type="email" 
+                        id="email" 
+                        name="email" 
+                        placeholder="johndoe@google.ca"
+                        value={email}
+                        onChange={(e)=>setEmail(e.target.value)}
+                        required></input>
+                    </div>
 
-                <div className="input">
-                    <label for="name">PASSWORD: </label>
-                    <input 
-                    type="password" 
-                    id="password" 
-                    name="password" 
-                    placeholder="abcd1234"
-                    value={password}
-                    onChange={(e)=>setPassword(e.target.value)}
-                    required></input>
+                    <div className="input">
+                        <label for="name">PASSWORD: </label>
+                        <input 
+                        type="password" 
+                        id="password" 
+                        name="password" 
+                        placeholder="abcd1234"
+                        value={password}
+                        onChange={(e)=>setPassword(e.target.value)}
+                        required></input>
+                    </div>
+                    <button onClick={handleSignIn}>SIGN IN</button>
+                    <p>Don't have an account? Sign up <a href="/signup">here.</a></p>
                 </div>
-                <button onClick={handleSignIn}>SIGN IN</button>
             </div>
-            <p>Don't have an account? Sign up <a href="/signup">here.</a></p>
         </div>
     )
 }

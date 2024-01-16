@@ -1,13 +1,179 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+*{
+  margin: 0; 
+  padding: 0; 
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body{
+  height: 100vh;  
+  width: 100%; 
+  overflow: hidden; 
+  margin-top: 0; 
+  margin-left: 0; 
+}
+
+/* SignIn and SignUp */
+.user-auth{
+  height: 100vh; 
+  width: 100%; 
+  text-align: center; 
+  background-image: url("https://www.acriticalhit.com/wp-content/uploads/2020/01/HEADER.png");
+  background-repeat: no-repeat; 
+  background-size: cover;
+}
+
+.user-auth .title{
+  background-color: rgb(105, 134, 172, 0.5); 
+  height: 100%; 
+  width: 100%; 
+}
+
+.user-auth h1{
+  padding-bottom: 5vh; 
+  padding-top: 5vh; 
+  color: white; 
+}
+
+.user-auth-form{
+  margin: auto; 
+  width: 50vh; 
+  height: 60%; 
+  background-color: rgb(59,75,100, 0.8); 
+  border-radius: 20px; 
+}
+
+label, p{
+  color: #fff; 
+}
+
+a{
+  color: #94b0c2; 
+}
+
+/* Sidebar */
+.menu.open > main{
+  margin-left: 260px; 
+}
+
+.menu.open > .sidebar{
+  width: 260px; 
+
+}
+
+.sidebar{
+  z-index: 3; 
+  margin-top: 50px; 
+  width: 0px; 
+  flex-shrink: 0; 
+ 
+  height: 100vh; 
+  overflow: auto; 
+  position: fixed; 
+  transition: width 0.5s ease-in-out; 
+
+}
+
+.sidebar-item{
+  position: relative;
+  display: block;
+  padding: 1em; 
+  font-size: 1.1em;
+  cursor: pointer; 
+  text-decoration: none; 
+
+}
+
+.sidebar-title{
+  white-space: nowrap;
+  display: flex; 
+  justify-content: space-between;
+  font-size: 25px; 
+  vertical-align: middle; 
+  color: #D3D3D3;
+  font-family: Impact, fantasy; 
+  letter-spacing: 1px; 
+
+}
+
+.sidebar-title .toggle-btn{ 
+  width: 20px; 
+  cursor: pointer;
+  transition: transform .3s; 
+
+}
+
+.sidebar-item.open .sidebar-title .toggle-btn{
+  transform: rotate(-180deg)
+}
+
+.sidebar-content{ 
+  white-space: nowrap;
+  padding-top: 10px; 
+  font-family: Impact, fantasy;
+  color: #D3D3D3;
+  height: 0; 
+  overflow: hidden;
+
+}
+
+.sidebar-item.open > .sidebar-content{
+  height: auto; 
+  
+}
+
+.btn-container{
+  z-index: 2; 
+  display: inline-block; 
+  width: 35px; 
+  height: 35px;
+  margin-left: 5px; 
+  margin-top: 5px; 
+  perspective: 800px; 
+  vertical-align: auto;
+  transition: 0.2s ease;
+  position: fixed; 
+
+}
+
+.btn-container.open > .sidebar{
+  width: 260px; 
+}
+
+.btn-container:active > .btn-card{
+  cursor: pointer; 
+  transform: rotateY(180deg);
+
+}
+
+.btn-card{
+  width: 100%; 
+  height: 100%; 
+  position: relative; 
+  transition: transform 1500ms; 
+  transform-style: preserve-3d; 
+
+}
+
+.open-btn{
+  backface-visibility: hidden;
+  width: 100%; 
+  height: 100%;
+  position: absolute; 
+  vertical-align: middle;
+
+}
+
+.close-btn{
+  transform: rotateY(180deg);
+  vertical-align: middle;
+  backface-visibility: hidden;
+  width: 100%; 
+  height: 100%; 
+  position: absolute; 
+
+}
+
+.explore, .mygames, .tbp{
+  width: 100%; 
+  height: 100vh;
+  background-color: #6986ac;
 }

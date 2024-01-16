@@ -1,11 +1,11 @@
 import Sidebar from '../nav/Sidebar.js'
 
-const TBP =()=>{
+const MyGames =()=>{
     return(
-        <div className="tbp">
+        <div className="mygames">
             <Sidebar/>
         </div>
     )
 }
 
-export default TBP
+export default MyGames

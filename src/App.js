@@ -5,6 +5,7 @@ import SignIn from './pages/SignIn.js'
 import SignUp from './pages/SignUp.js'
 import Explore from './pages/Explore'
 import TBP from './pages/TBP'
+import MyGames from './pages/MyGames'
 
 function App() {
   return (
@@ -13,14 +14,32 @@ function App() {
         <BrowserRouter>
           <Routes>  
             <Route index element={<SignIn/>}/>
-              <Route
-                path='/explore'
+            <Route
+              path='/explore'
+              element={
+                <ProtectedRoute>
+                  <Explore />
+                </ProtectedRoute>
+              }
+            />
+
+            <Route
+                path='/mygames'
                 element={
                   <ProtectedRoute>
-                    <Explore />
+                    <MyGames />
                   </ProtectedRoute>
                 }
-              />
+            />
+
+            <Route
+                path='/tobeplayed'
+                element={
+                  <ProtectedRoute>
+                    <TBP />
+                  </ProtectedRoute>
+                }
+            />
 
             <Route path="/signin" element={<SignIn/>}/>
             <Route path="/signup" element={<SignUp/>}/>

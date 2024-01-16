@@ -1,16 +1,16 @@
 [
     {   
-        "title": "HOME", 
-        "path": "/home"
+        "title": "EXPLORE", 
+        "path": "/explore"
 
     },
     {
-        "title": "REMINISCE", 
-        "path": "/reminisce"
+        "title": "MY GAMES", 
+        "path": "/mygames"
     },
     {
-        "title": "SETTINGS", 
-        "path": "/settings"
+        "title": "TO BE PLAYED", 
+        "path": "/tobeplayed"
     }, 
     {
         "title": "LOGOUT", 
