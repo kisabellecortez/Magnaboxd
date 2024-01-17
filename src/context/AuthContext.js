@@ -1,7 +1,7 @@
 import { useContext, createContext, useState, useEffect } from 'react'; 
 import { GoogleAuthProvider , createUserWithEmailAndPassword, signInWithPopup, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser } from 'firebase/auth';
 import { auth, db } from '../firebase.js' 
-import { doc, setDoc } from 'firebase/firestore'
+import { doc, setDoc, getDoc, arrayUnion, arrayRemove, updateDoc } from 'firebase/firestore'
 
 const AuthContext = createContext()
 
@@ -37,17 +37,19 @@ export const AuthContextProvider = ({ children })=> {
         
     }
 
-    function addEntry(entry){
-        //get date to use as id 
-        const date = new Date();  
-        const day = date.getDate(); 
-        const month = date.getMonth(); 
-        const year = date.getFullYear(); 
-        const id = (day.toString() + month.toString() + year.toString())
+    function addEntry(id) {
+        // Assuming `user.uid` and `db` are defined appropriately
+        const userDocRef = doc(db, user.uid, 'played-games');
+        updateDoc(userDocRef, {
+            games: arrayUnion(id)
+        })
+    }
 
-        //add data to users database
-        setDoc(doc(db, user.uid, id), {
-            string: entry
+    function delEntry(id){
+        //delete data from users database
+        const userDocRef = doc(db, user.uid, 'played-games');
+        updateDoc(userDocRef, {
+            games: arrayRemove(id)
         })
     }
     
@@ -62,7 +64,7 @@ export const AuthContextProvider = ({ children })=> {
       }, []);
 
     return(
-        <AuthContext.Provider value = {{ addEntry, googleSignIn, signIn, logOut, deleteUser, delUser, createUser, user }}>
+        <AuthContext.Provider value = {{ delEntry, addEntry, googleSignIn, signIn, logOut, deleteUser, delUser, createUser, user }}>
             { children }
         </AuthContext.Provider>
     );
