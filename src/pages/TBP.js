@@ -2,8 +2,11 @@ import Sidebar from '../nav/Sidebar.js'
 
 const TBP =()=>{
     return(
-        <div className="tbp">
+        <div>
             <Sidebar/>
+            <div className="tbp">
+
+            </div>
         </div>
     )
 }

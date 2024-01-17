@@ -2,8 +2,11 @@ import Sidebar from '../nav/Sidebar.js'
 
 const MyGames =()=>{
     return(
-        <div className="mygames">
+        <div>
             <Sidebar/>
+            <div className="mygames">
+                
+            </div>
         </div>
     )
 }
