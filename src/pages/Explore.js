@@ -1,13 +1,27 @@
-import Sidebar from '../nav/Sidebar.js'
-import GlobalAPI from '../services/GlobalAPI'
 import { useEffect, useState } from 'react'
+import Sidebar from '../nav/Sidebar.js'
 import Star from '../assets/star.svg'
+
+//RAWG
+import GlobalAPI from '../services/GlobalAPI'
+
+//Firebase
 import { UserAuth } from '../context/AuthContext.js'
+
+//Material UI components
 import Checkbox from '@mui/material/Checkbox';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';    
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
+import CardActionArea from '@mui/material/CardActionArea';
+import CardActions from '@mui/material/CardActions';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -61,28 +75,45 @@ const Explore = () => {
         <div>
             <Sidebar />
             <div className='explore'>
+                
                 {gameList.map((item) => (
                     <div className="card" key={item.id}>
-                        <img className="game-img" src={item.background_image} alt="in-game screenshot" />
-                        <h3 className="name">{item.name}</h3>
-                        <h3 className="rating">{item.rating} <img className="icon" src={Star} alt="star" /></h3>
-                        <p>{item.id}</p>
-                        <div className="boxes">
-                            <Checkbox
-                                {...label}
-                                icon={<FavoriteBorder />}
-                                checkedIcon={<Favorite />}
-                                onChange={(event) => handleAddGame(item.id)}
-                                checked={gameLikes[item.id] || false}
+                        <Card sx={{ maxWidth: 345 }}>
+                            <CardActionArea>
+                            <CardMedia
+                                component="img"
+                                height="200"
+                                image={item.background_image}
+                                alt="game image"
                             />
-                            <Checkbox
-                                {...label}
-                                icon={<BookmarkBorderIcon />}
-                                checkedIcon={<BookmarkIcon />}
-                                onChange={() => handleTBP(item.id)}
-                                checked={false} 
-                            />
-                        </div>
+                            <CardContent>
+                                <Typography gutterBottom variant="h7" component="div">
+                                {item.name}
+                                </Typography>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                    <h3 className="rating">{item.rating}<img className="icon" src={Star} alt="star" /></h3>
+                                </Typography>
+                            </CardContent>
+                            </CardActionArea>
+                            <CardActions>
+                            <Button size="small" color="primary">
+                                <Checkbox
+                                    {...label}
+                                    icon={<FavoriteBorder />}
+                                    checkedIcon={<Favorite />}
+                                    onChange={(event) => handleAddGame(item.id)}
+                                    checked={gameLikes[item.id] || false}
+                                />
+                                <Checkbox
+                                    {...label}
+                                    icon={<BookmarkBorderIcon />}
+                                    checkedIcon={<BookmarkIcon />}
+                                    onChange={() => handleTBP(item.id)}
+                                    checked={false} 
+                                />
+                            </Button>
+                            </CardActions>
+                        </Card>
                     </div>
                 ))}
             </div>
