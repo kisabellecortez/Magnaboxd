@@ -27,16 +27,23 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const Explore = () => {
     const [gameList, setGameList] = useState([]);
+    const { addLike, delLike, addSave, delSave } = UserAuth(); 
     const [gameLikes, setGameLikes] = useState(() => {
         const storedLikes = localStorage.getItem('likedGames');
         return storedLikes ? JSON.parse(storedLikes) : {};
     });
-    const { addEntry, delEntry } = UserAuth(); 
+    const[gameSaves, setGameSaves] = useState(() => {
+        const storedSaves = localStorage.getItem('savedGames'); 
+        return storedSaves ? JSON.parse(storedSaves) : {}; 
+    })
 
+    // update local storage items when modified
     useEffect(() => {
         localStorage.setItem('likedGames', JSON.stringify(gameLikes));
-    }, [gameLikes]);
+        localStorage.setItem('savedGames', JSON.stringify(gameSaves));
+    }, [gameLikes, gameSaves]);
 
+    // get list of games from api 
     const getGamesList = () => {
         GlobalAPI.getGamesList.then((resp) => {
             console.log(resp);
@@ -50,10 +57,10 @@ const Explore = () => {
 
         // If the game is not liked, add it to the database
         if (!isLiked) {
-            addEntry(id);
+            addLike(id);
         } else {
             // If the game is liked, remove it from the database
-            delEntry(id);
+            delLike(id);
         }
 
         // Toggle the like status in the local state
@@ -64,7 +71,20 @@ const Explore = () => {
     };
 
     const handleTBP = (id) => {
-        // Handle bookmark functionality here
+        const isSaved = gameSaves[id]; 
+
+        // add to db 
+        if(!isSaved){
+            addSave(id); 
+        }
+        else{
+            delSave(id); 
+        }
+
+        setGameSaves((prevSaves) => {
+            const newSaves = { ...prevSaves, [id]: !isSaved }; 
+            return newSaves;
+        })
     };
 
     useEffect(() => {
@@ -87,11 +107,11 @@ const Explore = () => {
                                 alt="game image"
                             />
                             <CardContent>
-                                <Typography gutterBottom variant="h7" component="div">
+                                <Typography gutterBottom variant="h6" component="div">
                                 {item.name}
                                 </Typography>
                                 <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                    <h3 className="rating">{item.rating}<img className="icon" src={Star} alt="star" /></h3>
+                                    <p className="rating">Global Rating: {item.rating}<img className="icon" src={Star} alt="star" /></p>
                                 </Typography>
                             </CardContent>
                             </CardActionArea>
@@ -109,7 +129,7 @@ const Explore = () => {
                                     icon={<BookmarkBorderIcon />}
                                     checkedIcon={<BookmarkIcon />}
                                     onChange={() => handleTBP(item.id)}
-                                    checked={false} 
+                                    checked={gameSaves[item.id] || false} 
                                 />
                             </Button>
                             </CardActions>

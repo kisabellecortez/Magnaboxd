@@ -37,19 +37,33 @@ export const AuthContextProvider = ({ children })=> {
         
     }
 
-    function addEntry(id) {
+    function addLike(id) {
         // Assuming `user.uid` and `db` are defined appropriately
-        const userDocRef = doc(db, user.uid, 'played-games');
+        const userDocRef = doc(db, user.uid, 'liked-games');
         updateDoc(userDocRef, {
-            games: arrayUnion(id)
+            liked: arrayUnion(id)
         })
     }
 
-    function delEntry(id){
+    function delLike(id){
         //delete data from users database
-        const userDocRef = doc(db, user.uid, 'played-games');
+        const userDocRef = doc(db, user.uid, 'liked-games');
         updateDoc(userDocRef, {
-            games: arrayRemove(id)
+            liked: arrayRemove(id)
+        })
+    }
+
+    function addSave(id){
+        const userDocRef = doc(db, user.uid, 'saved-games'); 
+        updateDoc(userDocRef, {
+            saves: arrayUnion(id)
+        })
+    }
+
+    function delSave(id){
+        const userDocRef = doc(db, user.uid, 'saved-games'); 
+        updateDoc(userDocRef, {
+            saves: arrayRemove(id) 
         })
     }
     
@@ -64,7 +78,7 @@ export const AuthContextProvider = ({ children })=> {
       }, []);
 
     return(
-        <AuthContext.Provider value = {{ delEntry, addEntry, googleSignIn, signIn, logOut, deleteUser, delUser, createUser, user }}>
+        <AuthContext.Provider value = {{ googleSignIn, signIn, logOut, deleteUser, delUser, createUser, addLike, delLike, addSave, delSave, user }}>
             { children }
         </AuthContext.Provider>
     );

@@ -7,9 +7,9 @@ import GlobalAPI from '../services/GlobalAPI'
 
 //Firebase
 import { db } from '../firebase.js'
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { UserAuth } from '../context/AuthContext.js'
-import { getAuth, onAuthStateChanged } from 'firebase/auth'
+import { getAuth } from 'firebase/auth'
 
 //Material UI components
 import Checkbox from '@mui/material/Checkbox';
@@ -29,10 +29,22 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const MyGames =()=>{
     const [games, setGames] = useState([]); // store the liked games 
-    const [gameList, setGameList] = useState([]); // stores list of liked games from Firebase
-    // const { user } = UserAuth();   
+    const [gameList, setGameList] = useState([]); // store api list of games 
+    const { addLike, delLike, addSave, delSave } = UserAuth(); 
+    const [gameLikes, setGameLikes] = useState(() => {
+        const storedLikes = localStorage.getItem('likedGames');
+        return storedLikes ? JSON.parse(storedLikes) : {};
+    });
+    const[gameSaves, setGameSaves] = useState(() => {
+        const storedSaves = localStorage.getItem('savedGames'); 
+        return storedSaves ? JSON.parse(storedSaves) : {}; 
+    })
 
-    const [loading, setLoading] = useState([]); 
+    // update local storage items when modified
+    useEffect(() => {
+        localStorage.setItem('likedGames', JSON.stringify(gameLikes));
+        localStorage.setItem('savedGames', JSON.stringify(gameSaves));
+    }, [gameLikes, gameSaves]);
 
     const getGamesList = () => {
         GlobalAPI.getGamesList.then((resp) => {
@@ -41,12 +53,6 @@ const MyGames =()=>{
         });
     };
 
-    const [gameLikes, setGameLikes] = useState(() => {
-        const storedLikes = localStorage.getItem('likedGames');
-        return storedLikes ? JSON.parse(storedLikes) : {};
-    });
-    const { addEntry, delEntry } = UserAuth(); 
-
     const auth = getAuth(); 
     const user = auth.currentUser; 
 
@@ -54,13 +60,13 @@ const MyGames =()=>{
         if(user){
             setGames([]);
 
-            const docRef = doc(db, user.uid, 'played-games'); 
+            const docRef = doc(db, user.uid, 'liked-games'); 
         
             getDoc(docRef).then((docSnap) => {
                 if(docSnap.exists()){
                     const data = docSnap.data(); 
-                    const games = data.games || []; 
-                    const likedGamesArray = [...games]; 
+                    const liked = data.liked || []; 
+                    const likedGamesArray = [...liked]; 
                     setGames(likedGamesArray);
 
                     console.log(likedGamesArray)
@@ -89,10 +95,10 @@ const MyGames =()=>{
 
         // If the game is not liked, add it to the database
         if (!isLiked) {
-            addEntry(id);
+            addLike(id);
         } else {
             // If the game is liked, remove it from the database
-            delEntry(id);
+            delLike(id);
         }
 
         // Toggle the like status in the local state
@@ -103,7 +109,20 @@ const MyGames =()=>{
     };
 
     const handleTBP = (id) => {
-        // Handle bookmark functionality here
+        const isSaved = gameSaves[id]; 
+
+        // add to db 
+        if(!isSaved){
+            addSave(id); 
+        }
+        else{
+            delSave(id); 
+        }
+
+        setGameSaves((prevSaves) => {
+            const newSaves = { ...prevSaves, [id]: !isSaved }; 
+            return newSaves;
+        })
     };
 
     useEffect(() => {
@@ -149,7 +168,7 @@ const MyGames =()=>{
                                         icon={<BookmarkBorderIcon />}
                                         checkedIcon={<BookmarkIcon />}
                                         onChange={() => handleTBP(item.id)}
-                                        checked={false} 
+                                        checked={gameSaves[item.id] || false} 
                                     />
                                 </Button>
                                 </CardActions>
