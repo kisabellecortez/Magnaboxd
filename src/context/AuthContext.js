@@ -43,7 +43,7 @@ export const AuthContextProvider = ({ children })=> {
         })
 
         await setDoc(docRefSaved, {
-            saved: []
+            saves: []
         })
     }
 
