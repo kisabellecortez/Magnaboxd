@@ -185,6 +185,14 @@ a{
 }
 
 /* Explore */
+.card{
+  display: inline-block; 
+  margin: 3vh;  
+}
+
+.name, .rating, p{
+  color: black; 
+}
 
 .loading{
   margin: 15%; 
