@@ -160,7 +160,7 @@ const TBP =()=>{
                                 <CardActionArea>
                                 <CardMedia
                                     component="img"
-                                    height="200"
+                                    height="250"
                                     image={item.background_image}
                                     alt="game image"
                                 />

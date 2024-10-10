@@ -185,49 +185,6 @@ a{
 }
 
 /* Explore */
-.card{
-  display: inline-block; 
-  margin: 3vh;  
-  width: 40vh; 
-  height: 45vh; 
-  border-radius: 20px; 
-  background-color: rgb(59,75,100, 0.3); 
-}
-
-.card .game-img{
-  display: block; 
-  width: 36vh; 
-  height: 25vh; 
-  border-radius: 20px; 
-  margin-top: 2vh;
-  margin-left: 2vh; 
-  margin-bottom: 2vh; 
-}
-
-.name, .rating, p{
-  color: black; 
-}
-
-.card .name{
-  display: inline-block;
-  float: left;  
-  text-align: left;
-  width: 60%;
-  word-wrap: break-word; 
-  margin-left: 2vh;
-}
-
-.card .rating{
-  display: inline-block;
-  float: right; 
-  margin-right: 2vh; 
-}
-
-.boxes{
-  float: right; 
-  margin-top: 6vh; 
-  margin-right: 1vh;  
-}
 
 .loading{
   margin: 15%; 
