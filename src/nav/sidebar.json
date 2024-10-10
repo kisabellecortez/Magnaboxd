@@ -13,6 +13,10 @@
         "path": "/tobeplayed"
     }, 
     {
+        "title": "SETTINGS", 
+        "path": "/settings"
+    },
+    {
         "title": "LOGOUT", 
         "path": "/signin"
     }

@@ -5,6 +5,7 @@ import SignIn from './pages/SignIn.js'
 import SignUp from './pages/SignUp.js'
 import Explore from './pages/Explore'
 import TBP from './pages/TBP'
+import Settings from './pages/Settings.js'
 import MyGames from './pages/MyGames'
 
 function App() {
@@ -37,6 +38,15 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <TBP />
+                  </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path='/settings'
+                element={
+                  <ProtectedRoute>
+                    <Settings />
                   </ProtectedRoute>
                 }
             />

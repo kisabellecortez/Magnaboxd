@@ -1,5 +1,5 @@
 import { useContext, createContext, useState, useEffect } from 'react'; 
-import { GoogleAuthProvider , createUserWithEmailAndPassword, signInWithPopup, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser } from 'firebase/auth';
+import { GoogleAuthProvider , createUserWithEmailAndPassword, signInWithPopup, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser, updateEmail, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from '../firebase.js' 
 import { doc, setDoc, getDocs, arrayUnion, arrayRemove, updateDoc, collection } from 'firebase/firestore'
 
@@ -22,10 +22,9 @@ export const AuthContextProvider = ({ children })=> {
         return signOut(auth)
     }
 
-    const delUser =()=>{
-        return deleteUser(user)
-    }
+    /* functions for user management */ 
 
+    // create user
     const createUser =async(email, password)=>{
         const date = new Date();  
         const day = date.getDate(); 
@@ -37,6 +36,30 @@ export const AuthContextProvider = ({ children })=> {
         
     }
 
+    // delete user 
+    const delUser =()=>{
+        return deleteUser(user)
+    }
+
+    // change profile picture 
+
+    // changes username 
+    const changeUsername = (email) => {
+        updateEmail(auth.currentUser, email).then(() => {
+            sendEmailVerification(auth.currentUser);
+        })
+    }
+
+    // sends a change password link 
+    const changePassword = () => {
+        const user = auth.currentUser; 
+
+        sendPasswordResetEmail(auth, user.email);
+    }
+
+    /* functions for adding games to collection */
+
+    // adds game to liked page 
     function addLike(id) {
         // Assuming `user.uid` and `db` are defined appropriately
         const userDocRef = doc(db, user.uid, 'liked-games');
@@ -45,6 +68,7 @@ export const AuthContextProvider = ({ children })=> {
         })
     }
 
+    // deletes game from liked page 
     function delLike(id){
         //delete data from users database
         const userDocRef = doc(db, user.uid, 'liked-games');
@@ -53,6 +77,8 @@ export const AuthContextProvider = ({ children })=> {
         })
     }
 
+
+    // adds game to saved page 
     function addSave(id){
         const userDocRef = doc(db, user.uid, 'saved-games'); 
         updateDoc(userDocRef, {
@@ -60,6 +86,8 @@ export const AuthContextProvider = ({ children })=> {
         })
     }
 
+
+    // deletes game from saved page 
     function delSave(id){
         const userDocRef = doc(db, user.uid, 'saved-games'); 
         updateDoc(userDocRef, {
@@ -78,7 +106,7 @@ export const AuthContextProvider = ({ children })=> {
       }, []);
 
     return(
-        <AuthContext.Provider value = {{ googleSignIn, signIn, logOut, deleteUser, delUser, createUser, addLike, delLike, addSave, delSave, user }}>
+        <AuthContext.Provider value = {{ googleSignIn, signIn, logOut, deleteUser, delUser, createUser, changeUsername, changePassword, addLike, delLike, addSave, delSave, user }}>
             { children }
         </AuthContext.Provider>
     );

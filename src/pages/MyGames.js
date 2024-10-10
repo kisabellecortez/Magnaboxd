@@ -24,10 +24,13 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardActions from '@mui/material/CardActions';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const MyGames =()=>{
+    const [loading, setLoading] = useState(true); 
     const [games, setGames] = useState([]); // store the liked games 
     const [gameList, setGameList] = useState([]); // store api list of games 
     const { addLike, delLike, addSave, delSave } = UserAuth(); 
@@ -51,6 +54,8 @@ const MyGames =()=>{
             console.log(resp);
             setGameList(resp.data.results);
         });
+
+        setLoading(false)
     };
 
     const auth = getAuth(); 
@@ -76,6 +81,8 @@ const MyGames =()=>{
         else{
             setGames([]);  
         }
+
+        setLoading(false)
     }, [user])
 
     // check if game is liked
@@ -129,11 +136,25 @@ const MyGames =()=>{
         getGamesList();
     }, []);
 
+    if(loading){
+        return(
+            <div>
+                <Sidebar />
+
+                <div className="mygames">
+                    <div className="loading"><CircularProgress size="5rem" /></div>
+                </div>
+            </div>
+        )
+    }
+
     return(
         <div>
             <Sidebar/>
+            
             <div className="mygames">
-                <h1>MY GAMES</h1>
+                <h1 className="title">FAVOURITES</h1>
+
                 {gameList.map((item) => (
                     checkLiked(item.id) && (
                         <div className="card" key={item.id}>    

@@ -23,9 +23,12 @@ import Button from '@mui/material/Button';
 import CardActionArea from '@mui/material/CardActionArea';
 import CardActions from '@mui/material/CardActions';
 
+import CircularProgress from '@mui/material/CircularProgress';
+
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 const Explore = () => {
+    const [loading, setLoading] = useState(true); 
     const [gameList, setGameList] = useState([]);
     const { addLike, delLike, addSave, delSave } = UserAuth(); 
     const [gameLikes, setGameLikes] = useState(() => {
@@ -44,11 +47,13 @@ const Explore = () => {
     }, [gameLikes, gameSaves]);
 
     // get list of games from api 
-    const getGamesList = () => {
-        GlobalAPI.getGamesList.then((resp) => {
+    const getGamesList = async() => {
+        await GlobalAPI.getGamesList.then((resp) => {
             console.log(resp);
             setGameList(resp.data.results);
         });
+
+        setLoading(false)
     };
 
     const handleAddGame = (id) => {
@@ -91,10 +96,24 @@ const Explore = () => {
         getGamesList();
     }, []);
 
+    if(loading){
+        return(
+            <div>
+                <Sidebar />
+
+                <div className="explore">
+                    <div className="loading"><CircularProgress size="5rem" /></div>
+                </div>
+            </div>
+        )
+    }
+
     return (
-        <div>
+        <div className="page">
             <Sidebar />
+
             <div className='explore'>
+                <h1 className="title">EXPLORE</h1>
                 
                 {gameList.map((item) => (
                     <div className="card" key={item.id}>
@@ -102,7 +121,7 @@ const Explore = () => {
                             <CardActionArea>
                             <CardMedia
                                 component="img"
-                                height="200"
+                                height="250"
                                 image={item.background_image}
                                 alt="game image"
                             />
