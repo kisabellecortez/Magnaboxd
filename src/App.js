@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import ProtectedRoute from './components/ProtectedRoute'
+// import ProtectedRoute from './components/ProtectedRoute'
 import { AuthContextProvider } from './context/AuthContext.js'
 import SignIn from './pages/SignIn.js'
 import SignUp from './pages/SignUp.js'
@@ -20,36 +20,28 @@ function App() {
             <Route
               path='/explore'
               element={
-                <ProtectedRoute>
                   <Explore />
-                </ProtectedRoute>
               }
             />
 
             <Route
                 path='/mygames'
                 element={
-                  <ProtectedRoute>
                     <MyGames />
-                  </ProtectedRoute>
                 }
             />
 
             <Route
                 path='/tobeplayed'
                 element={
-                  <ProtectedRoute>
                     <TBP />
-                  </ProtectedRoute>
                 }
             />
 
             <Route
                 path='/settings'
                 element={
-                  <ProtectedRoute>
                     <Settings />
-                  </ProtectedRoute>
                 }
             />
 
