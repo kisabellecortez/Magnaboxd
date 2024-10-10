@@ -1,7 +1,7 @@
 import { useContext, createContext, useState, useEffect } from 'react'; 
 import { GoogleAuthProvider , createUserWithEmailAndPassword, signInWithPopup, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser, updateEmail, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from '../firebase.js' 
-import { doc, arrayUnion, arrayRemove, setDoc } from 'firebase/firestore'
+import { doc, arrayUnion, arrayRemove, setDoc, updateDoc } from 'firebase/firestore'
 
 const AuthContext = createContext()
 
@@ -34,6 +34,17 @@ export const AuthContextProvider = ({ children })=> {
         console.log(currDate)
         await createUserWithEmailAndPassword(auth, email, password)
         
+        const user = auth.currentUser; 
+        const docRefLiked = doc(db, user.uid, 'liked-games'); 
+        const docRefSaved = doc(db, user.uid, 'saved-games')
+
+        await setDoc(docRefLiked, {
+            liked: []
+        })
+
+        await setDoc(docRefSaved, {
+            saved: []
+        })
     }
 
     // delete user 
@@ -63,7 +74,7 @@ export const AuthContextProvider = ({ children })=> {
     function addLike(id) {
         // Assuming `user.uid` and `db` are defined appropriately
         const userDocRef = doc(db, user.uid, 'liked-games');
-        setDoc(userDocRef, {
+        updateDoc(userDocRef, {
             liked: arrayUnion(id)
         })
     }
@@ -72,7 +83,7 @@ export const AuthContextProvider = ({ children })=> {
     function delLike(id){
         //delete data from users database
         const userDocRef = doc(db, user.uid, 'liked-games');
-        setDoc(userDocRef, {
+        updateDoc(userDocRef, {
             liked: arrayRemove(id)
         })
     }
@@ -81,7 +92,7 @@ export const AuthContextProvider = ({ children })=> {
     // adds game to saved page 
     function addSave(id){
         const userDocRef = doc(db, user.uid, 'saved-games'); 
-        setDoc(userDocRef, {
+        updateDoc(userDocRef, {
             saves: arrayUnion(id)
         })
     }
@@ -90,7 +101,7 @@ export const AuthContextProvider = ({ children })=> {
     // deletes game from saved page 
     function delSave(id){
         const userDocRef = doc(db, user.uid, 'saved-games'); 
-        setDoc(userDocRef, {
+        updateDoc(userDocRef, {
             saves: arrayRemove(id) 
         })
     }
