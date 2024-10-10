@@ -8,6 +8,8 @@ import TBP from './pages/TBP'
 import Settings from './pages/Settings.js'
 import MyGames from './pages/MyGames'
 
+/* added _redirects under build to go to different pages */
+
 function App() {
   return (
     <div>
