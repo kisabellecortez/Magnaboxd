@@ -1,4 +1,4 @@
-import { useState, useEffect, useContext } from 'react'
+import { useState, useEffect } from 'react'
 import Sidebar from '../nav/Sidebar.js'
 import Star from '../assets/star.svg'
 
