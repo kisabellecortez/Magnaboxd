@@ -1,7 +1,7 @@
 import { useContext, createContext, useState, useEffect } from 'react'; 
 import { GoogleAuthProvider , createUserWithEmailAndPassword, signInWithPopup, signInWithEmailAndPassword, signOut, onAuthStateChanged, deleteUser, updateEmail, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from '../firebase.js' 
-import { doc, arrayUnion, arrayRemove, updateDoc } from 'firebase/firestore'
+import { doc, arrayUnion, arrayRemove, setDoc } from 'firebase/firestore'
 
 const AuthContext = createContext()
 
@@ -63,7 +63,7 @@ export const AuthContextProvider = ({ children })=> {
     function addLike(id) {
         // Assuming `user.uid` and `db` are defined appropriately
         const userDocRef = doc(db, user.uid, 'liked-games');
-        updateDoc(userDocRef, {
+        setDoc(userDocRef, {
             liked: arrayUnion(id)
         })
     }
@@ -72,7 +72,7 @@ export const AuthContextProvider = ({ children })=> {
     function delLike(id){
         //delete data from users database
         const userDocRef = doc(db, user.uid, 'liked-games');
-        updateDoc(userDocRef, {
+        setDoc(userDocRef, {
             liked: arrayRemove(id)
         })
     }
@@ -81,7 +81,7 @@ export const AuthContextProvider = ({ children })=> {
     // adds game to saved page 
     function addSave(id){
         const userDocRef = doc(db, user.uid, 'saved-games'); 
-        updateDoc(userDocRef, {
+        setDoc(userDocRef, {
             saves: arrayUnion(id)
         })
     }
@@ -90,7 +90,7 @@ export const AuthContextProvider = ({ children })=> {
     // deletes game from saved page 
     function delSave(id){
         const userDocRef = doc(db, user.uid, 'saved-games'); 
-        updateDoc(userDocRef, {
+        setDoc(userDocRef, {
             saves: arrayRemove(id) 
         })
     }
